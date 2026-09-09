@@ -33,7 +33,9 @@ Python / Pandas — Data cleaning, analysis, and visualization
 Power BI — Dashboard and business-focused data visualization
 GitHub — Project documentation 
 
-# SQL Analysis
-# Key Findings
-Transaction Amount Analysis
+# SQL Analysis Key Findings
+Transaction Amount Analysis:
 Fraudulent transactions averaged $216.18 compared with $175.33 for legitimate transactions. The top 50 highest-value transactions had a 12% fraud rate compared with 1.51% overall.
+
+Foreign Transaction:
+
