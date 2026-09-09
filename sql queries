@@ -1,0 +1,133 @@
+-Fraud Investigation SQL Analysis
+-Dataset: credit_card_fraud_10k.csv
+
+USE fraud_analysis;
+
+SELECT COUNT(*) AS total_transactions
+FROM transactions;
+
+SELECT SUM(amount) AS total_transaction_value
+FROM transactions;
+
+SELECT AVG(amount) AS average_transaction
+FROM transactions;
+
+SELECT MAX(amount) AS largest_transaction
+FROM transactions;
+
+SELECT MIN(amount) AS smallest_transaction
+FROM transactions;
+
+SELECT COUNT(*) AS fraud_transactions
+FROM transactions
+WHERE is_fraud = 1;
+
+SELECT COUNT(*) AS legitimate_transactions
+FROM transactions
+WHERE is_fraud = 0;
+
+SELECT
+    COUNT(*) AS total_transactions,
+    SUM(is_fraud) AS fraud_transactions,
+    (SUM(is_fraud) / COUNT(*)) * 100 AS fraud_rate
+FROM transactions;
+
+SELECT
+    is_fraud,
+    COUNT(*) AS transaction_count,
+    AVG(amount) AS average_amount
+FROM transactions
+GROUP BY is_fraud;
+
+SELECT
+    transaction_id,
+    amount,
+    merchant_category,
+    foreign_transaction,
+    location_mismatch,
+    device_trust_score,
+    velocity_last_24h,
+    is_fraud
+FROM transactions
+ORDER BY amount DESC
+LIMIT 10;
+
+SELECT
+    transaction_id,
+    amount,
+    merchant_category,
+    foreign_transaction,
+    location_mismatch,
+    device_trust_score,
+    velocity_last_24h,
+    is_fraud
+FROM transactions
+ORDER BY amount DESC
+LIMIT 50;
+
+SELECT
+    COUNT(*) AS top_50_transactions,
+    SUM(is_fraud) AS fraud_in_top_50,
+    (SUM(is_fraud) / COUNT(*)) * 100 AS fraud_rate_top_50
+FROM (
+    SELECT *
+    FROM transactions
+    ORDER BY amount DESC
+    LIMIT 50
+) AS top_transactions;
+
+SELECT
+    foreign_transaction,
+    COUNT(*) AS transaction_count,
+    SUM(is_fraud) AS fraud_count,
+    (SUM(is_fraud) / COUNT(*)) * 100 AS fraud_rate
+FROM transactions
+GROUP BY foreign_transaction;
+
+SELECT
+    location_mismatch,
+    COUNT(*) AS transaction_count,
+    SUM(is_fraud) AS fraud_count,
+    (SUM(is_fraud) / COUNT(*)) * 100 AS fraud_rate
+FROM transactions
+GROUP BY location_mismatch;
+
+SELECT
+    MIN(device_trust_score) AS lowest_score,
+    MAX(device_trust_score) AS highest_score,
+    AVG(device_trust_score) AS average_score
+FROM transactions;
+
+SELECT
+    CASE
+        WHEN device_trust_score < 40 THEN 'Low (25-39)'
+        WHEN device_trust_score < 60 THEN 'Medium-Low (40-59)'
+        WHEN device_trust_score < 80 THEN 'Medium-High (60-79)'
+        ELSE 'High (80-99)'
+    END AS trust_level,
+    COUNT(*) AS transaction_count,
+    SUM(is_fraud) AS fraud_count,
+    ROUND((SUM(is_fraud) / COUNT(*)) * 100, 2) AS fraud_rate
+FROM transactions
+GROUP BY trust_level
+ORDER BY fraud_rate DESC;
+
+SELECT
+    MIN(velocity_last_24h) AS lowest_velocity,
+    MAX(velocity_last_24h) AS highest_velocity,
+    AVG(velocity_last_24h) AS average_velocity
+FROM transactions;
+
+SELECT
+    CASE
+        WHEN velocity_last_24h <= 1 THEN 'Low (0-1)'
+        WHEN velocity_last_24h <= 3 THEN 'Moderate (2-3)'
+        WHEN velocity_last_24h <= 5 THEN 'High (4-5)'
+        ELSE 'Very High (6+)'
+    END AS velocity_level,
+    COUNT(*) AS transaction_count,
+    SUM(is_fraud) AS fraud_count,
+    ROUND((SUM(is_fraud) / COUNT(*)) * 100, 2) AS fraud_rate
+FROM transactions
+GROUP BY velocity_level
+ORDER BY fraud_rate DESC;
