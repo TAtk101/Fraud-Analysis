@@ -34,8 +34,5 @@ Power BI — Dashboard and business-focused data visualization
 GitHub — Project documentation 
 
 # SQL Analysis Key Findings
-Transaction Amount Analysis:
-Fraudulent transactions averaged $216.18 compared with $175.33 for legitimate transactions. The top 50 highest-value transactions had a 12% fraud rate compared with 1.51% overall.
-
-Foreign Transaction:
+SQL was used to investigate transaction patterns and identify potential fraud risk indicators. The analysis found higher fraud rates among foreign transactions, location mismatches, low device-trust scores, and high transaction velocity, while transaction amount showed a more mixed relationship with fraud. These findings provide a foundation for combining multiple indicators to prioritize transactions for further investigation.
 
