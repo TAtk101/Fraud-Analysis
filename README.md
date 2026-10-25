@@ -29,7 +29,7 @@ The dataset contains 10,000 credit card transactions with information about tran
 # Tools Used
 
 MySQL — Data exploration and fraud-rate analysis
-Python / Pandas — Data cleaning, analysis, and visualization
+Python / Pandas / Matplotlib — Data cleaning, analysis, and visualization
 Power BI — Dashboard and business-focused data visualization
 GitHub — Project documentation 
 
