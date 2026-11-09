@@ -4,8 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-# LOADS THE DATA
-
 project_folder = Path(__file__).resolve().parent.parent
 file_path = project_folder / "data" / "credit_card_fraud_10k.csv"
 
@@ -23,8 +21,7 @@ print("Missing values:", df.isnull().sum().sum())
 print("Duplicate rows:", df.duplicated().sum())
 print("Duplicate transaction IDs:", df["transaction_id"].duplicated().sum())
 
-# FRAUD SUMMARY
-
+# Fraud rate
 fraud_count = (df["is_fraud"] == 1).sum()
 legitimate_count = (df["is_fraud"] == 0).sum()
 fraud_rate = df["is_fraud"].mean() * 100
@@ -35,8 +32,7 @@ print("Fraudulent transactions:", fraud_count)
 print("Legitimate transactions:", legitimate_count)
 print("Overall fraud rate:", round(fraud_rate, 2), "%")
 
-# FRAUD RATE BY FOREIGN TRANSACTION
-
+# foreign transaction fraud rate
 foreign_rates = (
     df.groupby("foreign_transaction")["is_fraud"].mean() * 100
 )
@@ -44,8 +40,7 @@ foreign_rates = (
 print("\nFRAUD RATE BY FOREIGN TRANSACTION")
 print(foreign_rates.round(2))
 
-# FRAUD RATE BY LOCATION MISMATCH
-
+# fraud rate by location mismatch
 location_rates = (
     df.groupby("location_mismatch")["is_fraud"].mean() * 100
 )
@@ -53,8 +48,7 @@ location_rates = (
 print("\nFRAUD RATE BY LOCATION MISMATCH")
 print(location_rates.round(2))
 
-# GROUP DEVICE TRUST SCORES
-
+# group device trust scores
 df["device_trust_band"] = pd.cut(
     df["device_trust_score"],
     bins=[24, 39, 59, 79, 99],
@@ -69,8 +63,7 @@ device_rates = (
 print("\nFRAUD RATE BY DEVICE TRUST BAND")
 print(device_rates.round(2))
 
-# TRANSACTION VELOCITY
-
+# Transaction Velocity
 df["velocity_band"] = pd.cut(
     df["velocity_last_24h"],
     bins=[-1, 1, 3, 5, 9],
@@ -85,8 +78,7 @@ velocity_rates = (
 print("\nFRAUD RATE BY TRANSACTION VELOCITY")
 print(velocity_rates.round(2))
 
-# MULTIPLE RISK INDICATORS
-
+# multiple risk indicators
 high_risk_transactions = df[
     (df["foreign_transaction"] == 1) &
     (df["location_mismatch"] == 1)
